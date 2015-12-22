@@ -200,7 +200,7 @@ pro kcwi_set_geom,kgeom,ikcfg,ppar, help=help
 			kgeom.lastdegree = 5
 			;
 			; output disperison
-			kgeom.dwout = 0.275 * float(kcfg.ybinsize)
+			kgeom.dwout = 0.210 * float(kcfg.ybinsize)
 		endif
 		;
 		; check central wavelength
@@ -209,7 +209,8 @@ pro kcwi_set_geom,kgeom,ikcfg,ppar, help=help
 				kcfg.campos, kcfg.gratpos)
 		;
 		; spatial scales
-		kgeom.pxscl = 0.00008096d0	; degrees per unbinned pixel
+		;kgeom.pxscl = 0.00008096d0	; degrees per unbinned pixel
+		kgeom.pxscl = 0.000070165d0	; degrees per unbinned pixel
 		kgeom.slscl = 0.00075437d0	; degrees per slice
 	;
 	; check for KCWI data

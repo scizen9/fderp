@@ -61,7 +61,7 @@ endif
 ;
 ; set some system parameters -- these may need to be populated
 ;                               differently later
-pix = 0.0100d		; pixel size in mm
+pix = 0.0130d		; pixel size in mm
 ybin = kgeom.ybinsize	; binning in spectral direction
 fcam = 305.0d		; focal length of camera in mm
 gamma = 4.0d		; mean out-of-plane angle for diffraction.
@@ -126,8 +126,10 @@ prelim_disp = cos(prelim_beta)/rho/fcam*(pix*ybin)*1e4
 ; redo this for the MEDREZ grating which is a surface profile grating
 if strtrim(strupcase(grating),2) eq 'MEDREZ' then begin
 	; preliminary beta
-	prelim_alpha = -((-264500.0)-kgeom.gratpos)/2000.0
-	prelim_beta = 61. - prelim_alpha
+	;prelim_alpha = -((-264500.0)-kgeom.gratpos)/2000.0
+	;prelim_beta = 61. - prelim_alpha
+	prelim_alpha = 57./2. + (kgeom.gratpos+202750.0)/2000.0
+	prelim_beta = 71.2 - prelim_alpha
 	prelim_disp = ((-cos(prelim_beta/!radeg)) / $
 		(rho * fcam ) ) * (pix*ybin)*1e4
 endif

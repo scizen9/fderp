@@ -132,8 +132,8 @@ for i=0,11 do begin
 	slice = warp[0:xcut<(wsz[0]-1),0:lastpix<(wsz[1]-1)]
 	if i eq 0 then begin
 		sz = size(slice,/dim)
-		cube = fltarr(sz[0],24,sz[1])
-		diag_cube = fltarr(sz[0],sz[1],24)
+		cube = fltarr(sz[0],12,sz[1])
+		diag_cube = fltarr(sz[0],sz[1],12)
 	endif
 	cube[*,i,*] = reverse(slice,1)
 	diag_cube[*,*,i] = slice
@@ -151,7 +151,7 @@ chdr = hdr
 ; image dimensions
 sxaddpar,chdr,'NAXIS',3
 sxaddpar,chdr,'NAXIS1',sz[0]
-sxaddpar,chdr,'NAXIS2',24
+sxaddpar,chdr,'NAXIS2',12
 sxaddpar,chdr,'NAXIS3',sz[1],' length of data axis 3',after='NAXIS2'
 ;
 ; spatial scale and zero point
@@ -231,7 +231,7 @@ if ppar.crpix1 le 0. then $
 	crpix1 = sz[0]/2. $	; spatial slit direction
 else	crpix1 = ppar.crpix1
 if ppar.crpix2 le 0. then $
-	crpix2 = 12. $		; spatial slice direction: 24/2
+	crpix2 = 6. $		; spatial slice direction: 12/2
 else	crpix2 = ppar.crpix2
 if ppar.crpix3 le 0. then $
 	crpix3 = 1. $		; wavelength direction

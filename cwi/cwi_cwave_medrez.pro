@@ -23,7 +23,7 @@ rho = 1.2 ; lines/um
 bin = 1.0
 
 ;pix size
-pix = 0.010; mm
+pix = 0.013; mm
 
 ; cam focal length
 fcam = 305.0; mm 
@@ -39,7 +39,7 @@ alphaplusbeta = (cam_start+cam_end)/2./!radeg
 extra = atan((cam_enc-(cam_enc_start+cam_enc_end)/2)/cam_radius)
 alphaplusbeta += extra
 
-;if talk then message,"a+b = "+string(alphaplusbeta*!radeg,"(f5.1)")+" deg.",/info
+if talk then message,"a+b = "+string(alphaplusbeta*!radeg,"(f5.1)")+" deg.",/info
 
 
 ; grating is a mirror for cam_enc = -1710600, grat_enc = -202750.0.
@@ -54,7 +54,8 @@ beta = alphaplusbeta-alpha
 if talk then message,"b = "+string(beta*!radeg,"(f5.1)")+" deg.",/info
 
 ; and a central wavelength
-cwave = (sin(beta)-sin(alpha))/rho*1e4
+fudge = 0.9615
+cwave = (sin(beta)-sin(alpha))/rho*1e4*fudge
 if talk then message,"cwave = "+string(cwave,"(f6.1)")+" A",/info
 
 ; compute a dispersion for s+g. 
