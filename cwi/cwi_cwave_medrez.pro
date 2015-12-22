@@ -20,10 +20,10 @@ grat_scale = 2000.0 ; counts/degree
 rho = 1.2 ; lines/um
 
 ; binning
-bin = 2.0
+bin = 1.0
 
 ;pix size
-pix = 0.015; mm
+pix = 0.010; mm
 
 ; cam focal length
 fcam = 305.0; mm 
