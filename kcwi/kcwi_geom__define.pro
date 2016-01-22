@@ -145,7 +145,7 @@ tmp = { kcwi_geom, $
 ; X values for bars
 	barx:fltarr(60), $	; measured in cbars image
 	refx:fltarr(60), $	; reference x for extracted arc spectra
-	x0out:19, $		; output spatial zeropoint
+	x0out:19, $		; output spatial zeropoint (unbinned pix)
 ;
 ; Y offset for each bar
 	baroff:fltarr(60), $	; pixel offset relative to refbar
