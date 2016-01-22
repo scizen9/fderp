@@ -217,9 +217,9 @@ pro kcwi_make_std,kcfg,ppar,invsen
 				xtitle='Wave (A)', xran=[wall0,wall1], /xs, $
 				ytitle='Sky e-', yran=yrng, /ys
 			oplot,[wgoo0,wgoo0],!y.crange,color=colordex('green'), $
-				thick=5
+				thick=3
 			oplot,[wgoo1,wgoo1],!y.crange,color=colordex('green'), $
-				thick=5
+				thick=3
 			read,'Next? (Q-quit plotting, <cr> - next): ',q
 			if strupcase(strmid(strtrim(q,2),0,1)) eq 'Q' then $
 				doplots = 0
@@ -313,8 +313,8 @@ pro kcwi_make_std,kcfg,ppar,invsen
 			ytitle='Effective Inv. Sens. (erg/cm^2/A/e-)', $
 			yran=yrng,/ys,xmargin=[11,3]
 		oplot,w,finvsen,color=colordex('red')
-		oplot,[wgoo0,wgoo0],!y.crange,color=colordex('green'),thick=5
-		oplot,[wgoo1,wgoo1],!y.crange,color=colordex('green'),thick=5
+		oplot,[wgoo0,wgoo0],!y.crange,color=colordex('green'),thick=3
+		oplot,[wgoo1,wgoo1],!y.crange,color=colordex('green'),thick=3
 		read,'Next: ',q
 		;
 		; plot effective area (cm^2)
@@ -328,9 +328,9 @@ pro kcwi_make_std,kcfg,ppar,invsen
 				ytitle='Effective Area (cm^2/A)',ys=9, $
 				yran=yrng,xmargin=[11,8]
 			oplot,[wgoo0,wgoo0],!y.crange,color=colordex('green'), $
-				thick=5
+				thick=3
 			oplot,[wgoo1,wgoo1],!y.crange,color=colordex('green'), $
-				thick=5
+				thick=3
 			oplot,!x.crange,[maxea,maxea],linesty=2
 			oplot,!x.crange,[mo[0],mo[0]],linesty=3
 			axis,yaxis=1,yrange=100.*(!y.crange/area),ys=1, $
@@ -340,9 +340,9 @@ pro kcwi_make_std,kcfg,ppar,invsen
 				xtitle='Wave (A)',xran=[wall0,wall1],/xs, $
 				ytitle='Effective Area (cm^2/A)',yran=yrng,/ys
 			oplot,[wgoo0,wgoo0],!y.crange,color=colordex('green'), $
-				thick=5
+				thick=3
 			oplot,[wgoo1,wgoo1],!y.crange,color=colordex('green'), $
-				thick=5
+				thick=3
 			oplot,!x.crange,[maxea,maxea],linesty=2
 			oplot,!x.crange,[mo[0],mo[0]],linesty=3
 		endelse
