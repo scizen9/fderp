@@ -87,8 +87,11 @@ pro kcwi_make_std,kcfg,ppar,invsen
 	; read in image
 	icub = kcwi_read_image(kcfg.imgnum,ppar,'_icuber',hdr,/calib,status=stat)
 	if stat ne 0 then begin
-		kcwi_print_info,ppar,pre,'could not read input file',/error
-		return
+		icub = kcwi_read_image(kcfg.imgnum,ppar,'_icube',hdr,/calib,status=stat)
+		if stat ne 0 then begin
+			kcwi_print_info,ppar,pre,'could not read input file',/error
+			return
+		endif
 	endif
 	;
 	; apply extinction correction
@@ -115,6 +118,11 @@ pro kcwi_make_std,kcfg,ppar,invsen
 	;
 	; get exposure time
 	expt = sxpar(hdr,'EXPTIME')
+	if expt eq 0. then begin
+		kcwi_print_info,ppar,pre,'no exposure time found, setting to 1s',/warn
+		expt = 1.
+	endif else $
+		kcwi_print_info,ppar,pre,'Using exposure time of',expt,/info
 	;
 	; get wavelength scale
 	w0 = sxpar(hdr,'CRVAL3')
@@ -171,7 +179,7 @@ pro kcwi_make_std,kcfg,ppar,invsen
 	xx = findgen(gx1-gx0)+gx0
 	mxsl = -1
 	mxsg = 0.
-	for i=0,23 do begin
+	for i=0,11 do begin
 		mo = moment(tot[*,i])
 		if sqrt(mo[1]) gt mxsg then begin
 			mxsg = sqrt(mo[1])
@@ -181,7 +189,7 @@ pro kcwi_make_std,kcfg,ppar,invsen
 	;
 	; relevant slices
 	sl0 = (mxsl-3)>0
-	sl1 = (mxsl+3)<23
+	sl1 = (mxsl+3)<11
 	;
 	; get x position of std
 	cx = cntrd1d(xx,tot[*,mxsl])
@@ -199,7 +207,7 @@ pro kcwi_make_std,kcfg,ppar,invsen
 		skyspec = fltarr(sz[2])
 		for j = 0,sz[2]-1 do begin
 			skyv = reform(icub[gx0:gx1,i,j])
-			gsky = where(xx le (cx-15) or xx ge (cx+15))
+			gsky = where(xx le (cx-25) or xx ge (cx+25))
 			sky = median(skyv[gsky])
 			skyspec[j] = sky
 			scub[*,i,j] = icub[*,i,j] - sky
@@ -260,8 +268,8 @@ pro kcwi_make_std,kcfg,ppar,invsen
 	sflx = sflx[sroi]
 	sfw = sfw[sroi]
 	fwhm = max(sfw)
-	kcwi_print_info,ppar,pre,'reference spectrum FWHM used',fwhm, $
-		format='(a,f5.1)'
+	kcwi_print_info,ppar,pre,'reference spectrum FWHM used',fwhm,'Angstroms', $
+		format='(a,f5.1,1x,a)'
 	;
 	; smooth to this resolution
 	obsspec = gaussfold(w,obsspec,fwhm,lammin=wgoo0,lammax=wgoo1)
@@ -283,11 +291,12 @@ pro kcwi_make_std,kcfg,ppar,invsen
 	if nt gt 0 then begin
 		wf = w - min(w)
 		sf = invsen
-		bad = where(w lt wgoo0 and w gt wgoo1, nbad)
-		if nbad gt 0 then sf[bad] = !values.d_nan
+		wgt = (invsen - invsen) + 1.
+		bad = where(w lt wgoo0 or w gt wgoo1, nbad)
+		if nbad gt 0 then wgt[bad] = 0.
 		;
 		; polynomial fit
-		res = polyfit(wf,sf,5,yfit)
+		res = polyfit(wf,sf,5,yfit,weight=wgt)
 		finvsen = poly(wf,res)
 	endif else begin
 		kcwi_print_info,ppar,pre,'no good wavelengths to fit',/error

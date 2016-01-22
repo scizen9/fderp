@@ -124,7 +124,7 @@ pro kcwi_slice_rr,kcfg,ppar,rr
 	w = w0 + y*dw
 	;
 	; relative responses
-	rrs = fltarr(24,sz[2]) + 1.
+	rrs = fltarr(12,sz[2]) + 1.
 	;
 	; avoid zero-like values
 	lim = 1.e-1
@@ -144,7 +144,7 @@ pro kcwi_slice_rr,kcfg,ppar,rr
 	doplots = ppar.display
 	;
 	; get reference slice number
-	irs = ppar.refslice >0<23
+	irs = ppar.refslice >0<11
 	;
 	; extract reference slice response
 	test = reform(icub[gx0:gx1,irs,y0:y1])
@@ -172,7 +172,7 @@ pro kcwi_slice_rr,kcfg,ppar,rr
 	endif
 	;
 	; loop over slices
-	for i=0,23 do begin
+	for i=0,11 do begin
 		;
 		; are we the reference slice?
 		if i eq irs then begin
@@ -203,7 +203,7 @@ pro kcwi_slice_rr,kcfg,ppar,rr
 				charthi=th, $
 				title='Img: '+strn(kcfg.imgnum)+' Slice: '+strn(i)+rlab, $
 				xtitle='Wave', xrange=xran,/xs, $
-				ytitle='Int/Ref Int',yrange=[0.25,1.50],/ys
+				ytitle='Int/Ref Int',yrange=[0.45,2.50],/ys
 			oplot,w,nfit,linesty=5
 			oplot,[wall0,wall0],!y.crange
 			oplot,[wall1,wall1],!y.crange

@@ -48,9 +48,15 @@ pro kcwi_test_std,imno,ps=ps,verbose=verbose,display=display
 		return
 	endif
 	;
-	; get inputs
-	kcfg = kcwi_read_cfgs('./redux',filespec='image'+strn(imno)+'_icubes.fits')
+	; get params
 	ppar = kcwi_read_ppar('./redux/kcwi.ppar')
+	;
+	; get image number string
+	imstr = string(imno,format='(i0'+strn(ppar.fdigits)+')')
+	;
+	; get inputs
+	fspec = ppar.froot + imstr + '_icubes.fits'
+	kcfg = kcwi_read_cfgs('./redux',filespec=fspec)
 	;
 	; check keyword overrides
 	if keyword_set(verbose) then $
@@ -137,18 +143,17 @@ pro kcwi_test_std,imno,ps=ps,verbose=verbose,display=display
 	xx = findgen(gx1-gx0)+gx0
 	mxsl = -1
 	mxsg = 0.
-	for i=0,23 do begin
+	for i=0,11 do begin
 		mo = moment(tot[*,i])
 		if sqrt(mo[1]) gt mxsg then begin
 			mxsg = sqrt(mo[1])
 			mxsl = i
 		endif
 	endfor
-	mxsl = 11
 	;
 	; relevant slices
 	sl0 = (mxsl-3)>0
-	sl1 = (mxsl+3)<23
+	sl1 = (mxsl+3)<11
 	;
 	; get x position of std
 	cx = cntrd1d(xx,tot[*,mxsl])
@@ -232,7 +237,7 @@ pro kcwi_test_std,imno,ps=ps,verbose=verbose,display=display
 	; make a hardcopy if requested
 	if keyword_set(ps) then begin
 		font_store=!p.font
-		psfile,sname+'_'+strn(imno)
+		psfile,sname+'_'+imstr
 		deepcolor
 		!p.background=colordex('white')
 		!p.color=colordex('black')
@@ -241,7 +246,7 @@ pro kcwi_test_std,imno,ps=ps,verbose=verbose,display=display
 	;
 	; over plot standard
 	yrng = get_plotlims(stdspec[gy])
-	plot,w,stdspec,title=sname+' Img #: '+strn(imno), $
+	plot,w,stdspec,title=sname+' Img #: '+imstr, $
 		xran=[wall0,wall1], /xs,xtickformat='(a1)', $
 		ytitle='!3Flam (erg s!U-1!N cm!U-2!N A!U-1!N)',yran=yrng,/ys, $
 		pos=[0.15,0.30,0.95,0.95]
@@ -249,7 +254,7 @@ pro kcwi_test_std,imno,ps=ps,verbose=verbose,display=display
 	oplot,swl,sflx,color=colordex('red')
 	oplot,[wgoo0,wgoo0],!y.crange,color=colordex('green')
 	oplot,[wgoo1,wgoo1],!y.crange,color=colordex('green')
-	legend,['Cal. Flux','Obs. Flux','Smoothed'],linesty=[0,0,0], $
+	kcwi_legend,['Cal. Flux','Obs. Flux','Smoothed'],linesty=[0,0,0], $
 		color=[colordex('red'),colordex('black'),colordex('blue')], $
 		/clear,clr_color=!p.background,/bottom,/right
 	;
@@ -261,7 +266,7 @@ pro kcwi_test_std,imno,ps=ps,verbose=verbose,display=display
 	fmo = moment(frsd[gy],/nan)
 	;
 	; annotate residuals on main plot
-	legend,['<Resid> = '+strtrim(string(mo[0],format='(g13.3)'),2) + $
+	kcwi_legend,['<Resid> = '+strtrim(string(mo[0],format='(g13.3)'),2) + $
 		' +- '+strtrim(string(sqrt(mo[1]),format='(g13.3)'),2)+' Flam', $
 		'<Resid> = '+strtrim(string(fmo[0],format='(f8.2)'),2) + $
 		' +- '+strtrim(string(sqrt(fmo[1]),format='(f8.2)'),2)+' %'], $

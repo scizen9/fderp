@@ -420,6 +420,13 @@ for i=istart,nf-1 do begin
 					ityp = 5
 					do_out = (1 eq 1)
 				endif
+				if strpos(rec,'EMCCDExptime') ge 0 then begin
+					key = gettok(rec,' ')
+					key = 'EXPTIME'
+					val = strtrim(rec,2)
+					ityp = 5
+					do_out = (1 eq 1)
+				endif
 				if strpos(rec,'NSVERS') ge 0 then begin
 					key = gettok(rec,' ')
 					val = strtrim(rec,2)

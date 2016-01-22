@@ -146,7 +146,7 @@ pro kcwi_slice_prof,kcfg,ppar,profs
 	endif
 	;
 	; profiles
-	profs = fltarr(sz[0],24)
+	profs = fltarr(sz[0],12)
 	;
 	; good range
 	gx0 = ppar.slicex0
@@ -163,7 +163,7 @@ pro kcwi_slice_prof,kcfg,ppar,profs
 	doplots = ppar.display
 	;
 	; loop over slices
-	for i=0,23 do begin
+	for i=0,11 do begin
 		;
 		; full wavelength sample (avoiding edges)
 		test  = reform(icub[*,i,y0:y3])
@@ -229,7 +229,7 @@ pro kcwi_slice_prof,kcfg,ppar,profs
 			read,'Next slice? (Q-quit plotting, <cr>-next): ',q
 		endif
 		if strupcase(strmid(q,0,1)) eq 'Q' then doplots = 0
-	endfor	; loop over 24 slices
+	endfor	; loop over 12 slices
 	;
 	; update profile image header
 	sxaddpar,hdr,'COMMENT','  '+pre+' '+systime(0)

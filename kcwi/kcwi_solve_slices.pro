@@ -85,7 +85,7 @@ if kgeom.nasmask eq 1 then $
 else	degree = 3
 ;
 ; loop over slices
-for i=0,23 do begin
+for i=0,11 do begin
 	sli = where(kgeom.slice eq i and kgeom.xi gt 0. and $
 		    finite(kgeom.xw) and finite(kgeom.yw), nsli)
 	if nsli le 0 then begin

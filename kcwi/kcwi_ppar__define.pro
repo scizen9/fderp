@@ -138,8 +138,8 @@ tmp = { kcwi_ppar, $
 	crpix3:-1., $		; Wavelength reference pixel
 ;
 ; Slice profile processing
-	slicex0:15, $		; safe lower spatial limit for slices
-	slicex1:72, $		; safe upper spatial limit for slices
+	slicex0:19, $		; safe lower spatial limit for slices
+	slicex1:172, $		; safe upper spatial limit for slices
 	profexists:0, $		; slice profile frame exists?
 	nprofs:0, $		; number of slice profile images
 	profs:'', $		; List of slice profile images

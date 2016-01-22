@@ -322,10 +322,10 @@ pro kcwi_stage6rr,ppfname,linkfname,help=help,select=select, $
 							oby0,oby1,format='(a,2i7)',/info
 					;
 					; get rr matching object
-					rrob = dblarr(24,sz[2]) + 1.e9			; fill with large
+					rrob = dblarr(12,sz[2]) + 1.e9			; fill with large
 					;
 					; loop over slices
-					for is=0,23 do begin
+					for is=0,11 do begin
 						;
 						; get matching pixels
 						rrob[is,oby0:oby1] = mrr[is,rry0:rry1]	; replace with good
@@ -375,7 +375,7 @@ pro kcwi_stage6rr,ppfname,linkfname,help=help,select=select, $
 						sky = mrdfits(sfil,0,skyhdr,/fscale,/silent)
 						;
 						; do correction
-						for is=0,23 do for ix = 0, sz[0]-1 do $
+						for is=0,11 do for ix = 0, sz[0]-1 do $
 							sky[ix,is,*] = sky[ix,is,*] / rrob[is,*]
 						;
 						; update header
@@ -395,7 +395,7 @@ pro kcwi_stage6rr,ppfname,linkfname,help=help,select=select, $
 						obj = mrdfits(nfil,0,objhdr,/fscale,/silent)
 						;
 						; do correction
-						for is=0,23 do for ix = 0, sz[0]-1 do $
+						for is=0,11 do for ix = 0, sz[0]-1 do $
 							obj[ix,is,*] = obj[ix,is,*] / rrob[is,*]
 						;
 						; update header

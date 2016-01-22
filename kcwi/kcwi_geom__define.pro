@@ -84,7 +84,7 @@ tmp = { kcwi_geom, $
 	gratanom:0., $		; grating angle anomoly (degrees)
 ;
 ; pixel scale
-	pxscl:0.00008096d0, $	; degrees per unbinned spatial pixel
+	pxscl:0.000070165d0, $	; degrees per unbinned spatial pixel
 ;
 ; slice scale
 	slscl:0.00075437d0, $	; degrees per slice
@@ -145,7 +145,7 @@ tmp = { kcwi_geom, $
 ; X values for bars
 	barx:fltarr(60), $	; measured in cbars image
 	refx:fltarr(60), $	; reference x for extracted arc spectra
-	x0out:15, $		; output spatial zeropoint
+	x0out:19, $		; output spatial zeropoint
 ;
 ; Y offset for each bar
 	baroff:fltarr(60), $	; pixel offset relative to refbar

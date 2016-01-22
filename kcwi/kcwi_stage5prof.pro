@@ -244,7 +244,7 @@ pro kcwi_stage5prof,ppfname,linkfname,help=help,select=select, $
 					;
 					; adjust mprof accordingly
 					if sz[0] gt mpsz[0] then begin
-						tmp = fltarr(sz[0],24) + 1.
+						tmp = fltarr(sz[0],12) + 1.
 						tmp[0:(mpsz[0]-1),*] = mprof
 						mprof = tmp
 					endif else if sz[0] lt mpsz[0] then begin
@@ -272,7 +272,7 @@ pro kcwi_stage5prof,ppfname,linkfname,help=help,select=select, $
 					endelse
 					;
 					; do correction
-					for is=0,23 do begin
+					for is=0,11 do begin
 						for iy = 0, sz[2]-1 do begin
 							img[*,is,iy] = img[*,is,iy] / mprof[*,is]
 							;
@@ -317,7 +317,7 @@ pro kcwi_stage5prof,ppfname,linkfname,help=help,select=select, $
 						sky = mrdfits(sfil,0,skyhdr,/fscale,/silent)
 						;
 						; do correction
-						for is=0,23 do for iy = 0, sz[2]-1 do $
+						for is=0,11 do for iy = 0, sz[2]-1 do $
 							sky[*,is,iy] = sky[*,is,iy] / mprof[*,is]
 						;
 						; update header
@@ -337,7 +337,7 @@ pro kcwi_stage5prof,ppfname,linkfname,help=help,select=select, $
 						obj = mrdfits(nfil,0,objhdr,/fscale,/silent)
 						;
 						; do correction
-						for is=0,23 do for iy = 0, sz[2]-1 do $
+						for is=0,11 do for iy = 0, sz[2]-1 do $
 							obj[*,is,iy] = obj[*,is,iy] / mprof[*,is]
 						;
 						; update header

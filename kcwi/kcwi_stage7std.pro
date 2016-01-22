@@ -146,8 +146,12 @@ pro kcwi_stage7std,ppfname,linkfname,help=help,select=select, $
 		;
 		; image to process
 		;
-		; require output from kcwi_stage6rr
+		; look for output from kcwi_stage6rr
 		obfil = kcwi_get_imname(ppar,imgnum[i],'_icuber',/reduced)
+		;
+		; if not check for raw cube
+		if not file_test(obfil) then $
+			obfil = kcwi_get_imname(ppar,imgnum[i],'_icube',/reduced)
 		;
 		; check if input file exists
 		if file_test(obfil) then begin
@@ -196,6 +200,10 @@ pro kcwi_stage7std,ppfname,linkfname,help=help,select=select, $
 						;
 						; does input std image exist?
 						sinfile = kcwi_get_imname(ppar,snums[i],'_icuber',/reduced)
+						;
+						; if not check for raw cube
+						if not file_test(sinfile) then $
+							sinfile = kcwi_get_imname(ppar,imgnum[i],'_icube',/reduced)
 						if file_test(sinfile) then begin
 							do_std = (1 eq 1)
 							kcwi_print_info,ppar,pre,'building std file = '+msfile
@@ -280,7 +288,7 @@ pro kcwi_stage7std,ppfname,linkfname,help=help,select=select, $
 					kcwi_correct_extin,img,hdr,ppar
 					;
 					; do calibration
-					for is=0,23 do begin
+					for is=0,11 do begin
 						for ix = 0, sz[0]-1 do begin
 							img[ix,is,*] = (img[ix,is,*]/expt) * mscal
 							;
@@ -331,7 +339,7 @@ pro kcwi_stage7std,ppfname,linkfname,help=help,select=select, $
 						kcwi_correct_extin,sky,skyhdr,ppar
 						;
 						; do correction
-						for is=0,23 do for ix = 0, sz[0]-1 do $
+						for is=0,11 do for ix = 0, sz[0]-1 do $
 							sky[ix,is,*] = (sky[ix,is,*]/expt) * mscal
 						;
 						; update header
@@ -355,7 +363,7 @@ pro kcwi_stage7std,ppfname,linkfname,help=help,select=select, $
 						kcwi_correct_extin,obj,objhdr,ppar
 						;
 						; do correction
-						for is=0,23 do for ix = 0, sz[0]-1 do $
+						for is=0,11 do for ix = 0, sz[0]-1 do $
 							obj[ix,is,*] = (obj[ix,is,*]/expt) * mscal
 						;
 						; update header
