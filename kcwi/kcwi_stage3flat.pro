@@ -218,8 +218,9 @@ pro kcwi_stage3flat,ppfname,linkfname,help=help,select=select, $
 				if fnums[i] ge 0 then begin
 					;
 					; master flat file name
-					mffile = cdir + 'mflat_' + $
-					      strn(fnums[i],padtype=1,padchar='0',length=ppar.fdigits) + '.fits'
+					;mffile = cdir + 'mflat_' + $
+					;      strn(fnums[i],padtype=1,padchar='0',length=ppar.fdigits) + '.fits'
+					mffile = cdir + 'mflat_' + string(fnums[i],'(i0'+strn(ppar.fdigits)+')') + '.fits'
 					;
 					; master flat image ppar filename
 					mfppfn = strmid(mffile,0,strpos(mffile,'.fits')) + '.ppar'

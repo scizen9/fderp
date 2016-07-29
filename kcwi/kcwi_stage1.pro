@@ -238,7 +238,8 @@ pro kcwi_stage1,ppfname,linkfname,help=help,select=select, $
 			if bnums[i] ge 0 then begin
 				;
 				; master bias file name
-				mbfile = cdir + 'mbias_' + strn(bnums[i]) + '.fits'
+				;mbfile = cdir + 'mbias_' + strn(bnums[i]) + '.fits'
+				mbfile = cdir + 'mbias_' + string(bnums[i],'(i0'+strn(ppar.fdigits)+')') + '.fits'
 				;
 				; master bias image ppar filename
 				mbppfn = strmid(mbfile,0,strpos(mbfile,'.fits')) + '.ppar'
@@ -348,7 +349,7 @@ pro kcwi_stage1,ppfname,linkfname,help=help,select=select, $
 					osy1	= bsec[ia,1,1]
 					;
 					; collapse each row
-					osvec = total(img[osx0:osx1,osy0:osy1],1)/float(oscan_pix)
+					osvec = median(img[osx0:osx1,osy0:osy1],dim=1)
 					xx = findgen(n_elements(osvec)) + osy0
 					;
 					; fit overscan vector

@@ -309,6 +309,7 @@ for i=istart,nf-1 do begin
 	focpos = -9.
 	campos = -9.
 	gratpos = -9.
+	exptime = -9.
 	angout = (1 eq 1)
 	focout = (1 eq 1)
 	tubout = (1 eq 1)
@@ -331,17 +332,8 @@ for i=istart,nf-1 do begin
 	if n_elements(hdr) gt 1 then begin
 		;
 		; check if exposure time in header
-		test = sxpar(hdr,'EXPTIME',count=nex)
-		if nex le 0 then begin
-			print,'Please enter exposure time for '+flist[i]
-			exptim=0.
-			read,': ',exptim
-			sxaddpar,hdr,'EXPTIME',exptim
-		endif
-		;
-		; check if exposure time consistent with being a bias frame
-		if sxpar(hdr,'EXPTIME') eq 0. then $
-			bias = (1 eq 1)
+		exptime = sxpar(hdr,'EXPTIME',count=nex)
+		if nex gt 0 then got_exptime = (1 eq 1)
 		;
 		; look for info file
 		ifil = strmid(flist[i],0,strpos(flist[i],'.fit'))+'.info'
@@ -353,6 +345,8 @@ for i=istart,nf-1 do begin
 			back = (1 eq 0)
 			targ = (1 eq 0)
 			naso = (1 eq 0)
+			got_date = (1 eq 0)
+			got_exptime = (1 eq 0)
 			;
 			; open the info file
 			openr,il,ifil,/get_lun
@@ -419,6 +413,7 @@ for i=istart,nf-1 do begin
 					val = strtrim(rec,2)
 					ityp = 5
 					do_out = (1 eq 1)
+					got_exptime = (1 eq 1)
 				endif
 				if strpos(rec,'EMCCDExptime') ge 0 then begin
 					key = gettok(rec,' ')
@@ -426,6 +421,7 @@ for i=istart,nf-1 do begin
 					val = strtrim(rec,2)
 					ityp = 5
 					do_out = (1 eq 1)
+					got_exptime = (1 eq 1)
 				endif
 				if strpos(rec,'NSVERS') ge 0 then begin
 					key = gettok(rec,' ')
@@ -548,7 +544,7 @@ for i=istart,nf-1 do begin
 					after = 'IMGTYPE'
 					do_out = (1 eq 1)
 				endif
-				if strpos(rec,'UTC') ge 0 then begin
+				if strpos(rec,'UTC') ge 0 and not got_date then begin
 					rec = strtrim(rec,2)
 					key = gettok(rec,' ')
 					key = 'DATE'
@@ -562,10 +558,17 @@ for i=istart,nf-1 do begin
 					ityp = 7
 					after = 'EXPTIME'
 					do_out = (1 eq 1)
-					;
-					; don't write these out for sub-images
-					if back then do_out = (1 eq 0)
-					if targ then do_out = (1 eq 0)
+					got_date = (1 eq 1)
+				endif
+				if strpos(rec,'STARTTIME:') ge 0 and not got_date then begin
+					key = gettok(rec,' ')
+					key = 'DATE'
+					datstr = repchr(gettok(rec,' '),':','-')
+					timstr = strmid(rec,0,10)
+					val = datstr+'T'+timstr
+					ityp = 7
+					do_out = (1 eq 1)
+					got_date = (1 eq 1)
 				endif
 				if strpos(rec,'LST') ge 0 then begin
 					rec = strtrim(rec,2)
@@ -719,6 +722,11 @@ for i=istart,nf-1 do begin
     			; close input info file
     			free_lun,il
 		endif	; info file exists
+		;
+		; check if exposure time not zero, otherwise assume a bias
+		if got_exptime and exptime gt 0. then $
+			bias = (1 eq 0) $
+		else	bias = (1 eq 1)
 		;
 		; Now check image type
 		key = 'IMGTYPE'

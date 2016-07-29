@@ -217,7 +217,8 @@ pro kcwi_stage2dark,ppfname,linkfname,help=help,select=select, $
 				if dnums[i] ge 0 then begin
 					;
 					; master dark file name
-					mdfile = cdir + 'mdark_' + strn(dnums[i]) + '.fits'
+					;mdfile = cdir + 'mdark_' + strn(dnums[i]) + '.fits'
+					mdfile = cdir + 'mdark_' + string(dnums[i],'(i0'+strn(ppar.fdigits)+')') + '.fits'
 					;
 					; master dark image ppar filename
 					mdppfn = strmid(mdfile,0,strpos(mdfile,'.fits')) + '.ppar'
