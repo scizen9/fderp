@@ -126,10 +126,12 @@ prelim_disp = cos(prelim_beta)/rho/fcam*(pix*ybin)*1e4
 ; redo this for the MEDREZ grating which is a surface profile grating
 if strtrim(strupcase(grating),2) eq 'MEDREZ' then begin
 	; preliminary beta
-	;prelim_alpha = -((-264500.0)-kgeom.gratpos)/2000.0
-	;prelim_beta = 61. - prelim_alpha
-	prelim_alpha = 57./2. + (kgeom.gratpos+202750.0)/2000.0
-	prelim_beta = 71.2 - prelim_alpha
+	; These equations seems to work better for 160504 data
+	prelim_alpha = -((-264500.0)-kgeom.gratpos)/2000.0
+	prelim_beta = 61. - prelim_alpha
+	; These were the original equations (changed on 160809 by jdn)
+	;prelim_alpha = 57./2. + (kgeom.gratpos+202750.0)/2000.0
+	;prelim_beta = 71.2 - prelim_alpha
 	prelim_disp = ((-cos(prelim_beta/!radeg)) / $
 		(rho * fcam ) ) * (pix*ybin)*1e4
 endif

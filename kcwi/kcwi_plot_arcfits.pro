@@ -273,7 +273,7 @@ for b=0,59 do begin
 		plot,refwvl,refspec/fac,thick=th,charthi=th, title=tlab, $
 			xthick=th,xtitle='Wavelength (A)',xrange=[minwav,maxwav],/xs, $
 			ythick=th,ytitle='Flux',yrange=yrng,/ys
-		oplot,waves,specs[*,b],color=pcolor,thick=1.0
+		oplot,waves,smooth(specs[*,b],5),color=pcolor,thick=1.0
 		oplot,[wavgood0,wavgood0],!y.crange,color=colordex('green'),linesty=1,thick=th
 		oplot,[wavgood1,wavgood1],!y.crange,color=colordex('green'),linesty=1,thick=th
 		oplot,[wavall0,wavall0],!y.crange,color=colordex('orange'),linesty=1,thick=th

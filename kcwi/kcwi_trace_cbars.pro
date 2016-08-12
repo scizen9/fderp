@@ -108,7 +108,7 @@ pbuf = 5
 if keyword_set(pkbuf) then pbuf=pkbuf
 step = 80/kgeom.ybinsize
 if keyword_set(stepsize) then step=stepsize
-navg = 3
+navg = 30
 if keyword_set(avgrows) then navg=avgrows
 do_plots = ppar.display
 ;
@@ -169,7 +169,7 @@ backv[0:win/2-1] = backv[win/2]
 backv[nrpts-win/2:*] = backv[nrpts-win/2-1]
 ;
 ; subtract
-row = row - backv
+;row = row - backv
 ;
 ; row maximum
 rowmax = max(row)
@@ -201,21 +201,24 @@ tries = 0
 ; start at half peak, but above sky limit
 barth = rowmax*smul>skylim
 while npks ne 60 and tries lt 10 do begin
+	pks = findpeaks(findgen(n_elements(row)),row,7,0.003,rowmax*0.07, $
+		count=npks)
 	;
 	; find indices for data above threshhold
-	t=where(row gt barth, nt)
+	;t=where(row gt barth, nt)
 	;
 	; make range list with commas splitting each peak
-	rangepar,t,tstr
-	sta=strsplit(tstr,',',/extract,count=npks)
+	;rangepar,t,tstr
+	;sta=strsplit(tstr,',',/extract,count=npks)
 	;
 	; check for single-pixel lines
 	;good = where(strpos(sta,'-') ge 0, ngood)
 	;if ngood ne npks then npks = 0
 	;
 	; keep decrementing threshhold until we reach 60 peaks
-	smul -= 0.05 > 0.01
-	barth = rowmax*smul>skylim
+	;smul -= 0.05 > 0.01
+	;barth = rowmax*smul
+	;barth = rowmax*smul>skylim
 	;
 	; keep incrementing tries until we reach limit
 	tries += 1
@@ -225,6 +228,10 @@ kcwi_print_info,ppar,pre,'final bar thresh, ntries',barth,tries
 ; did we succeed?
 if npks ne 60 then begin
 	kcwi_print_info,ppar,pre,'unable to find 60 peaks',npks,/error
+	plot,row
+	oplot,pks,fltarr(npks)+50,psym=5
+	q=''
+	read,'next: ',q
 	kgeom.status=1
 	return
 endif
@@ -248,10 +255,11 @@ pp = 0L
 for j=0,npks-1 do begin
 	;
 	; get index range for this peak
-	st = sta[j]
+	;st = sta[j]
 	;
 	; convert back into index list
-	rangepar,sta[j],x
+	;rangepar,sta[j],x
+	x = lindgen(12) + (fix(pks[j])-6)
 	;
 	; get fluxes in range
 	y = row[x]

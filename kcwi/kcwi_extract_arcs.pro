@@ -81,7 +81,7 @@ if kcwi_verify_geom(kgeom) ne 0 then return
 ; keywords
 if keyword_set(navg) then $
 	nav = (fix(navg/2)-1) > 1 $
-else	nav = 2
+else	nav = 6
 ;
 if keyword_set(ccwindow) then $
 	ccwn = ccwindow $
