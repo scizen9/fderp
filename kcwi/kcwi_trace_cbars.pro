@@ -191,34 +191,65 @@ if skysig le 0. then $
 kcwi_print_info,ppar,pre,'Sky, SkySig',sky,skysig
 ;
 ; make sure we are above sky + 10.*skysig
-skylim =  sky + skysig * 10.
+skylim =  sky + skysig
 ;
 ; find 60 peaks
-smul = 0.5
+smul = 0.1
 npks = 0
 tries = 0
 ;
 ; start at half peak, but above sky limit
+;barth = rowmax*smul>skylim
 barth = rowmax*smul>skylim
 while npks ne 60 and tries lt 10 do begin
-	pks = findpeaks(findgen(n_elements(row)),row,7,0.003,rowmax*0.07, $
-		count=npks)
+	pks = findpeaks(findgen(n_elements(row)),row,7,0.003,barth,count=npks)
 	;
-	; find indices for data above threshhold
-	;t=where(row gt barth, nt)
+	; too many peaks?
+	if npks gt 60 then begin
+		;
+		; loop through and enforce a minimum separation of bars
+		done = (1 eq 0)
+		while not done do begin
+			;
+			; good array
+			gp = intarr(npks) + 1
+			pp = 0
+			done2 = (1 eq 0)
+			;
+			; look at each separation
+			while not done2 do begin
+				po = pks[pp+1] - pks[pp]
+				;
+				; we've found a baddie
+				if po lt 29. then begin
+					;
+					; extract it from the set
+					gp[pp+1] = 0
+					good = where(gp eq 1, npks)
+					pks = pks[good]
+					;
+					; start the examination again
+					done2 = (1 eq 1)
+				endif else pp += 1	; next bar
+				;
+				; if we've looked at them all, we're done
+				if pp ge npks-1 then begin
+					done2 = (1 eq 1)
+					done = (1 eq 1)
+				endif
+			endwhile
+		endwhile
+	endif
 	;
-	; make range list with commas splitting each peak
-	;rangepar,t,tstr
-	;sta=strsplit(tstr,',',/extract,count=npks)
-	;
-	; check for single-pixel lines
-	;good = where(strpos(sta,'-') ge 0, ngood)
-	;if ngood ne npks then npks = 0
-	;
-	; keep decrementing threshhold until we reach 60 peaks
-	;smul -= 0.05 > 0.01
-	;barth = rowmax*smul
-	;barth = rowmax*smul>skylim
+	; check results
+	if npks ne 60 then begin
+		;
+		; keep decrementing threshhold until we reach 60 peaks
+		smul = (smul - 0.01) > 0.01
+		;barth = rowmax*smul
+		barth = rowmax*smul>skylim
+		print,'tries, smul, barth, npks: ',tries,smul,barth,npks
+	endif
 	;
 	; keep incrementing tries until we reach limit
 	tries += 1
@@ -228,8 +259,8 @@ kcwi_print_info,ppar,pre,'final bar thresh, ntries',barth,tries
 ; did we succeed?
 if npks ne 60 then begin
 	kcwi_print_info,ppar,pre,'unable to find 60 peaks',npks,/error
-	plot,row
-	oplot,pks,fltarr(npks)+50,psym=5
+	plot,row>0.,/ys
+	oplot,pks,fltarr(npks)+barth,psym=5
 	q=''
 	read,'next: ',q
 	kgeom.status=1
