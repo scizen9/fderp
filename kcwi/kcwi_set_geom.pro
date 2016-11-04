@@ -189,10 +189,10 @@ pro kcwi_set_geom,kgeom,ikcfg,ppar, help=help
 		endif else if strtrim(kcfg.gratid,2) eq 'MEDREZ' then begin
 			;
 			; MEDREZ requires input offsets or bar-to-bar cc will fail
-			;offs = [ 0., -355.,  -42., -439.,  -43., -457., $
-			;	 -94., -502.,  -84., -551.,  -43., -648.]
-			offs = [ 0., -355.,  -42., -385.,  -35., -400., $
-				 -77., -440.,  -70., -484.,  -122., -635.]
+			;offs = [ 0., -355.,  -42., -385.,  -35., -400., $
+			;	 -77., -440.,  -70., -484.,  -122., -635.]
+			offs = [ -580, -130., -489.,  -74., -446.,  -83., $
+				-408.,  -38., -385.,  -45.,  -355., 0.]
 			kgeom.ccoff = offs
 			kgeom.resolution = 2.50	; Angstroms
 			kgeom.wavran = 1310.	; Angstroms

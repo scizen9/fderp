@@ -202,7 +202,8 @@ tries = 0
 ;barth = rowmax*smul>skylim
 barth = rowmax*smul>skylim
 while npks ne 60 and tries lt 10 do begin
-	pks = findpeaks(findgen(n_elements(row)),row,7,0.003,barth,count=npks)
+	pks = findpeaks(findgen(n_elements(row)),row,7,0.003,barth,15, $
+		count=npks)
 	;
 	; too many peaks?
 	if npks gt 60 then begin

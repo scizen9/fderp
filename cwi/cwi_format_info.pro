@@ -303,6 +303,7 @@ for i=istart,nf-1 do begin
 	bias = (1 eq 0)
 	dflat = (1 eq 0)
 	tflat = (1 eq 0)
+	got_exptime = (1 eq 0)
 	fm4pos = -9.
 	mmppos = -9.
 	calxpos = -9.
@@ -346,7 +347,6 @@ for i=istart,nf-1 do begin
 			targ = (1 eq 0)
 			naso = (1 eq 0)
 			got_date = (1 eq 0)
-			got_exptime = (1 eq 0)
 			;
 			; open the info file
 			openr,il,ifil,/get_lun
@@ -414,6 +414,7 @@ for i=istart,nf-1 do begin
 					ityp = 5
 					do_out = (1 eq 1)
 					got_exptime = (1 eq 1)
+					exptime = float(val)
 				endif
 				if strpos(rec,'EMCCDExptime') ge 0 then begin
 					key = gettok(rec,' ')
@@ -422,6 +423,7 @@ for i=istart,nf-1 do begin
 					ityp = 5
 					do_out = (1 eq 1)
 					got_exptime = (1 eq 1)
+					exptime = float(val)
 				endif
 				if strpos(rec,'NSVERS') ge 0 then begin
 					key = gettok(rec,' ')

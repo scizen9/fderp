@@ -801,17 +801,17 @@ pro kcwi_stage1,ppfname,linkfname,help=help,select=select, $
 			;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 			;
 			; write out mask image
-			msk = transpose(msk)
+			msk = rotate(msk,6)
 			ofil = kcwi_get_imname(ppar,imgnum[i],'_msk',/nodir)
 			kcwi_write_image,msk,mskhdr,ofil,ppar
 			;
 			; output variance image
-			var = transpose(var)
+			var = rotate(var,6)
 			ofil = kcwi_get_imname(ppar,imgnum[i],'_var',/nodir)
 			kcwi_write_image,var,varhdr,ofil,ppar
 			;
 			; write out final intensity image
-			img = transpose(img)
+			img = rotate(img,6)
 			ofil = kcwi_get_imname(ppar,imgnum[i],'_int',/nodir)
 			kcwi_write_image,img,hdr,ofil,ppar
 		;

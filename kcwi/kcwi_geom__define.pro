@@ -137,7 +137,7 @@ tmp = { kcwi_geom, $
 	slice:intarr(6120), $	; slice number for each point
 ;
 ; Reference bar for wavelength solution
-	refbar:2, $		; 0 - 59 (defaults to 2)
+	refbar:57, $		; 0 - 59 (defaults to 2)
 	rbcoeffs:fltarr(9), $	; polynomial wavelength solution up to 9 coeffs
 	refoutx:fltarr(5), $	; ref output x control point positions (pixels)
 	refdelx:-9., $		; ref delta x (pixels)
