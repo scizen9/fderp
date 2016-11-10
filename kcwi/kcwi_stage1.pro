@@ -801,17 +801,23 @@ pro kcwi_stage1,ppfname,linkfname,help=help,select=select, $
 			;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 			;
 			; write out mask image
-			msk = rotate(msk,6)
+			if kcfg.juliandate lt 2457523.0 then $
+				msk = rotate(msk,1) $
+			else	msk = rotate(msk,6)
 			ofil = kcwi_get_imname(ppar,imgnum[i],'_msk',/nodir)
 			kcwi_write_image,msk,mskhdr,ofil,ppar
 			;
 			; output variance image
-			var = rotate(var,6)
+			if kcfg.juliandate lt 2457523.0 then $
+				var = rotate(var,1) $
+			else	var = rotate(var,6)
 			ofil = kcwi_get_imname(ppar,imgnum[i],'_var',/nodir)
 			kcwi_write_image,var,varhdr,ofil,ppar
 			;
 			; write out final intensity image
-			img = rotate(img,6)
+			if kcfg.juliandate lt 2457523.0 then $
+				img = rotate(img,1) $
+			else	img = rotate(img,6)
 			ofil = kcwi_get_imname(ppar,imgnum[i],'_int',/nodir)
 			kcwi_write_image,img,hdr,ofil,ppar
 		;
