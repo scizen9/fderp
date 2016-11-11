@@ -185,6 +185,7 @@ endfor
 kgeom.baroff = boff
 ;
 ; Kgeom timestamp
+kgeom.progid = pre
 kgeom.timestamp = systime(1)
 ;
 ; clean up
